@@ -99,13 +99,17 @@ def process_autozoom(objSettings):
 		for intV in range(16):
 			fltShiftU = npyShiftU[intU, intV].item()
 			fltShiftV = npyShiftV[intU, intV].item()
+                        #checks if left edge of the area of interest falls outside the image
 
+			#center of original image + horizontal shift must be less than half the cropped image width at full zoom ie. Center should not end outside cropped zoomed image
 			if objSettings['objFrom']['fltCenterU'] + fltShiftU < fltCropWidth / 2.0:
 				continue
-
+				
+                        #center of original image + horizontal shift must be greater than the image width minus half the cropped image at full zoom ie. Centre should not end outside cropped zoomed image
 			elif objSettings['objFrom']['fltCenterU'] + fltShiftU > objCommon['intWidth'] - (fltCropWidth / 2.0):
 				continue
-
+				
+                        #checks if bottom edge of the area of interest falls outside the image
 			elif objSettings['objFrom']['fltCenterV'] + fltShiftV < fltCropHeight / 2.0:
 				continue
 
