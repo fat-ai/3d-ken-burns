@@ -64,35 +64,37 @@ for strOption, strArg in getopt.getopt(sys.argv[1:], '', [
 ##########################################################
 
 if __name__ == '__main__':
+	# we don't want to resize the original image as we want to work with the whole thing
 	npyImage = cv2.imread(filename=args_strIn, flags=cv2.IMREAD_COLOR)
 
-	intWidth = npyImage.shape[1]
-	intHeight = npyImage.shape[0]
+	#intWidth = npyImage.shape[1]
+	#intHeight = npyImage.shape[0]
 
-	fltRatio = float(intWidth) / float(intHeight)
+	#fltRatio = float(intWidth) / float(intHeight)
 
-	intWidth = min(int(1024 * fltRatio), 1024)
-	intHeight = min(int(1024 / fltRatio), 1024)
-
-	npyImage = cv2.resize(src=npyImage, dsize=(intWidth, intHeight), fx=0.0, fy=0.0, interpolation=cv2.INTER_AREA)
+	#intWidth = min(int(1024 * fltRatio), 1024)
+	#intHeight = min(int(1024 / fltRatio), 1024)
+	
+        #Edit this npy image to remove size restrictions , need to check for any downstream issues with this?
+	#npyImage = cv2.resize(src=npyImage, dsize=(intWidth, intHeight), fx=0.0, fy=0.0, interpolation=cv2.INTER_AREA)
 
 	process_load(npyImage, {} if args_strDepth is None else {'npyDepth': numpy.load(args_strDepth)})
 
 	objFrom = {
-		'fltCenterU': intWidth / 2.0,
-		'fltCenterV': intHeight / 2.0,
-		'intCropWidth': int(math.floor(0.97 * intWidth)),
-		'intCropHeight': int(math.floor(0.97 * intHeight))
+		'fltCenterU':  npyImage.shape[1] - (1280/2) #the x coordinate of the centre of the camera at start, set to npyImage.shape[1] - (1280/2), was intWidth / 2.0,
+		'fltCenterV': npyImage.shape[0] / 2, #the y coordinate of the centre of the camera at start, set to  npyImage.shape[0] / 2, was intHeight / 2.0
+		'intCropWidth': 1280, #the width of the image (inc small crop), set to 1280, was int(math.floor(0.97 * intWidth)),
+		'intCropHeight': 720  #the height of the image (inc small crop), set to 720 was int(math.floor(0.97 * intHeight))
 	}
 
 	objTo = process_autozoom({
-		'fltShift': 100.0,
-		'fltZoom': 1.25,
+		'fltShift': -100.0, # total amount of movement , was 100
+		'fltZoom': 1.25, # total amount of zoom
 		'objFrom': objFrom
 	})
 
 	npyResult = process_kenburns({
-		'fltSteps': numpy.linspace(0.0, 1.0, 75).tolist(),
+		'fltSteps': numpy.linspace(0.0, 1.0, 75).tolist(), # movement sideways, backward, number of frames
 		'objFrom': objFrom,
 		'objTo': objTo,
 		'boolInpaint': True
