@@ -168,7 +168,7 @@ def process_kenburns(objSettings):
 			tenShift = process_shift({
 				'tenPoints': objCommon['tenInpaPoints'],
 				'fltShiftU': fltShiftU,
-				'fltShiftV': fltShiftV,
+				'fltShiftV': 0,#fltShiftV,
 				'fltDepthFrom': fltDepthFrom,
 				'fltDepthTo': fltDepthTo
 			})[1]
@@ -192,7 +192,7 @@ def process_kenburns(objSettings):
 		tenPoints = process_shift({
 			'tenPoints': objCommon['tenInpaPoints'],
 			'fltShiftU': fltShiftU,
-			'fltShiftV': fltShiftV,
+			'fltShiftV': 0, #fltShiftV,
 			'fltDepthFrom': fltDepthFrom,
 			'fltDepthTo': fltDepthTo
 		})[0]
