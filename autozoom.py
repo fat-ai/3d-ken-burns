@@ -81,7 +81,7 @@ if __name__ == '__main__':
 	process_load(npyImage, {} if args_strDepth is None else {'npyDepth': numpy.load(args_strDepth)})
 
 	objFrom = {
-		'fltCenterU':  npyImage.shape[1] - (1280/2) #the x coordinate of the centre of the camera at start, set to npyImage.shape[1] - (1280/2), was intWidth / 2.0,
+		'fltCenterU':  npyImage.shape[1] - (1280/2), #the x coordinate of the centre of the camera at start, set to npyImage.shape[1] - (1280/2), was intWidth / 2.0,
 		'fltCenterV': npyImage.shape[0] / 2, #the y coordinate of the centre of the camera at start, set to  npyImage.shape[0] / 2, was intHeight / 2.0
 		'intCropWidth': 1280, #the width of the image (inc small crop), set to 1280, was int(math.floor(0.97 * intWidth)),
 		'intCropHeight': 720  #the height of the image (inc small crop), set to 720 was int(math.floor(0.97 * intHeight))
