@@ -1,6 +1,6 @@
 def process_load(npyImage, objSettings):
 	objCommon['fltFocal'] = 1024 / 2.0
-	objCommon['fltBaseline'] = 1000000.0
+	objCommon['fltBaseline'] = 40.0
 	objCommon['intWidth'] = npyImage.shape[1]
 	objCommon['intHeight'] = npyImage.shape[0]
 
@@ -19,7 +19,7 @@ def process_load(npyImage, objSettings):
 
 	# end
 
-	tenValid = (spatial_filter(tenDisparity / tenDisparity.max(), 'laplacian').abs() < 0.03).float()
+	tenValid = (spatial_filter(tenDisparity / tenDisparity.max(), 'laplacian').abs() < 0.01).float()
 	tenPoints = depth_to_points(tenDepth * tenValid, objCommon['fltFocal'])
 	tenUnaltered = depth_to_points(tenDepth, objCommon['fltFocal'])
 
@@ -121,7 +121,7 @@ def process_autozoom(objSettings):
 			tenPoints = process_shift({
 				'tenPoints': objCommon['tenRawPoints'],
 				'fltShiftU': fltShiftU,
-				'fltShiftV': fltShiftV,
+				'fltShiftV': 0,#fltShiftV,
 				'fltDepthFrom': fltDepthFrom,
 				'fltDepthTo': fltDepthTo
 			})[0]
