@@ -81,24 +81,24 @@ if __name__ == '__main__':
 	process_load(npyImage, {} if args_strDepth is None else {'npyDepth': numpy.load(args_strDepth)})
 
 	objFrom = {
-		'fltCenterU':  npyImage.shape[1] - (1280/2), #the x coordinate of the centre of the camera at start, set to npyImage.shape[1] - (1280/2), was intWidth / 2.0,
+		'fltCenterU':  npyImage.shape[1] - (640+1280), #the x coordinate of the centre of the camera at start, set to npyImage.shape[1] - (1280/2), was intWidth / 2.0,
 		'fltCenterV': npyImage.shape[0] / 2, #the y coordinate of the centre of the camera at start, set to  npyImage.shape[0] / 2, was intHeight / 2.0
-		'intCropWidth': 1280, #the width of the image (inc small crop), set to 1280, was int(math.floor(0.97 * intWidth)),
-		'intCropHeight': 720  #the height of the image (inc small crop), set to 720 was int(math.floor(0.97 * intHeight))
+		'intCropWidth': 1280*0.97, #the width of the image (inc small crop), set to 1280, was int(math.floor(0.97 * intWidth)),
+		'intCropHeight': 720*0.97  #the height of the image (inc small crop), set to 720 was int(math.floor(0.97 * intHeight))
 	}
 
 	objTo = process_autozoom({
-		'fltShift': -15000.0, # total amount of movement , was 100
-		'fltZoom': 1.00, # total amount of zoom
+		'fltShift': -1000.0, # total amount of movement , was 100
+		'fltZoom': 1.002, # total amount of zoom
 		'objFrom': objFrom
 	})
 
 	npyResult = process_kenburns({
-		'fltSteps': numpy.linspace(0.0, 1.0, 200).tolist(), # movement sideways, backward, number of frames
+		'fltSteps': numpy.linspace(0.0, 180.0, 600).tolist(), # movement sideways, backward, number of frames
 		'objFrom': objFrom,
 		'objTo': objTo,
 		'boolInpaint': True
 	})
 
-	moviepy.editor.ImageSequenceClip(sequence=[ npyFrame[:, :, ::-1] for npyFrame in npyResult + list(reversed(npyResult))[1:-1] ], fps=25).write_videofile(args_strOut)
+	moviepy.editor.ImageSequenceClip(sequence=[ npyFrame[:, :, ::-1] for npyFrame in npyResult + list(reversed(npyResult))[1:-1] ], fps=40).write_videofile(args_strOut)
 # end
