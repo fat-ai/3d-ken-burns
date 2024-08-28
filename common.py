@@ -1,6 +1,6 @@
 def process_load(npyImage, objSettings):
 	objCommon['fltFocal'] = 1024 / 2.0
-	objCommon['fltBaseline'] = 40.0
+	objCommon['fltBaseline'] = 1000000.0
 	objCommon['intWidth'] = npyImage.shape[1]
 	objCommon['intHeight'] = npyImage.shape[0]
 
@@ -197,7 +197,7 @@ def process_kenburns(objSettings):
 			'fltDepthTo': fltDepthTo
 		})[0]
 
-		tenRender, tenExisting = render_pointcloud(tenPoints, torch.cat([ objCommon['tenInpaImage'], objCommon['tenInpaDepth'] ], 1).view(1, 4, -1), objCommon['intWidth'], objCommon['intHeight'], objCommon['fltFocal'], objCommon['fltBaseline'])
+		tenRender, tenExisting = render_pointcloud(tenPoints, torch.cat([ objCommon['tenInpaImage'], objCommon['tenInpaDepth'] ], 1).view(1, 4, -1), 1280, 720, objCommon['fltFocal'], objCommon['fltBaseline'])
 
 		tenRender = fill_disocclusion(tenRender, tenRender[:, 3:4, :, :] * (tenExisting > 0.0).float())
 
